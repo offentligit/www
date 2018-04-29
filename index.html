@@ -66,7 +66,7 @@
     <body>
         <script type="text/javascript">
           var signupListener = () => {
-            var fakeUser = "Offentlig IT støtte";
+            var fakeUser = "Offentlig IT-interesseret";
             var emailInput = document.getElementById("email");
             var email = emailInput.value;
 
@@ -78,8 +78,6 @@
             if (!validateEmail(email)) {
               document.getElementById("errorInvalidEmail").style.display = "block";
               return false;
-            } else {
-              emailInput.setAttribute("class", "");
             }
 
             var options = {
