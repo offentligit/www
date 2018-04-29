@@ -87,6 +87,11 @@
             };
             var url = "https://hype.offentlig-it.dk/api/campaign/c9ef308c-1069-4e2a-b300-1f13647d97df/subscriber";
             fetch(url, options).then(function(response) {
+                if(response.status !== 200) {
+                    console.error("Failed to subscribe, status code " + response.status, response);
+                    document.getElementById("errorServerError").style.display = "block";
+                    return;
+                }
                 document.getElementById("errorServerError").style.display = "none";
                 document.getElementById("errorInvalidEmail").style.display = "none";
                 document.getElementById("postSignup").style.display = "block";
