@@ -78,7 +78,7 @@
             }
 
             if (!validateEmail(email)) {
-              emailInput.setAttribute("class", "error");
+              document.getElementById("errorInvalidEmail").style.display = "block";
               return false;
             } else {
               emailInput.setAttribute("class", "");
@@ -91,8 +91,13 @@
             };
             var url = "https://hype.offentlig-it.dk/api/campaign/c9ef308c-1069-4e2a-b300-1f13647d97df/subscriber";
             fetch(url, options).then(function(response) {
-              document.getElementById("postSignup").style.display = "block";
-              document.getElementById("preSignup").style.display = "none";
+                document.getElementById("errorServerError").style.display = "none";
+                document.getElementById("errorInvalidEmail").style.display = "none";
+                document.getElementById("postSignup").style.display = "block";
+                document.getElementById("preSignup").style.display = "none";
+            }).catch(function(error) {
+                console.error("Failed to subscribe", error);
+                document.getElementById("errorServerError").style.display = "block";
             });
 
             return false;
@@ -128,9 +133,15 @@
           </form>
         </section>
         <section id="postSignup" style="display: none">
-          Tak fordi du skrev dig op.
-          Du vil modtage en email for at bekræfte din tilmelding.
-          Derefter sender vi dig en mail så snart kampagnen går i luften.
+            Tak fordi du skrev dig op.
+            Du vil modtage en email for at bekræfte din tilmelding.
+            Derefter sender vi dig en mail så snart kampagnen går i luften.
+        </section>
+        <section id="errorInvalidEmail" style="display: none">
+            Der er en fejl i din email. Ret den og prøv igen.
+        </section>
+        <section id="errorServerError" style="display: none">
+            Der gik noget galt med tilmeldingen. Prøv igen.
         </section>
     </body>
 </html>
