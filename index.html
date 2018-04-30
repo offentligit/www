@@ -1,73 +1,87 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf8">
-        <title>Offentlig IT</title>
-        <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
-        <style type="text/css">
-            html {
-                min-height: 100vh;
-            }
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-                color: white;
-                background-color: #2f3640;
-                margin-top: 10em;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin: 0;
-                min-height: 100vh;
-                box-sizing: border-box;
-            }
-            body > * {
-                /*border: 1px solid red;*/
-                margin: 1.5em 0;
-            }
-            a {
-              color: #DEDEDE;
-            }
-            header {
-                padding: 2em 6px;
-                text-align: center;
-            }
-            header h1 {
-                font-family: 'Space Mono', monospace;
-                font-weight: normal;
-                font-size: 3em;
-                margin: 0;
-            }
-            header h2 {
-                font-weight: 200;
-                margin: 0;
-            }
-            section.intro {
-                max-width: 600px;
-                font-size: 1.1em;
-                padding: 0 6px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Offentlig IT</h1>
-            <h2>Vores penge, vores software</h2>
-        </header>
-        <section class="intro">
-            <p>
-                Når fællesskabet betaler for noget, skal det også være fællesskabet der ejer det.
-            </p>
-            <p>
-                Offentlig IT er et projekt der skal munde ud i et <a href="https://www.borgerforslag.dk/" target="_blank" rel="noopener">borgerforslag</a>,
-                der stiller krav til at staten ejer de IT-projekter vi betaler for.
-            </p>
-            <p>
-                Når der udvikles IT for skattekroner, er det ikke fællesskabet, der ejer systemet.
-                Det gør det svært at tjekke kvaliteten af systemet, og at skifte leverandør hvis noget
-                ikke er i orden.
-                Det giver dyr, lav-kvalitets software med dårlig sikkerhed, der sjældent leveres til tiden.
-            </p>
-        </section>
-    </body>
-</html>
+---
+layout: default
+---
+<script type="text/javascript">
+    function signupListener(e) {
+    var fakeUser = "Offentlig IT-interesseret";
+    var emailInput = document.getElementById("email");
+    var email = emailInput.value;
+
+    function validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    if (!validateEmail(email)) {
+        document.getElementById("errorInvalidEmail").style.display = "block";
+        return false;
+    }
+
+    var options = {
+        method: "POST",
+        body: JSON.stringify({ name: fakeUser, email: email }),
+        mode: 'cors',
+        headers: { 'Content-Type': "application/json" }
+    };
+    var url = "https://hype.offentlig-it.dk/api/campaign/c9ef308c-1069-4e2a-b300-1f13647d97df/subscriber";
+    fetch(url, options).then(function(response) {
+        if(response.status !== 200) {
+            console.error("Failed to subscribe, status code " + response.status, response);
+            document.getElementById("errorServerError").style.display = "block";
+            return;
+        }
+        document.getElementById("errorServerError").style.display = "none";
+        document.getElementById("errorInvalidEmail").style.display = "none";
+        document.getElementById("postSignup").style.display = "block";
+        document.getElementById("preSignup").style.display = "none";
+    }).catch(function(error) {
+        console.error("Failed to subscribe", error);
+        document.getElementById("errorServerError").style.display = "block";
+    });
+
+    return false;
+    };
+</script>
+<header>
+    <h1>Offentlig IT</h1>
+    <h2>Vores penge, vores software</h2>
+</header>
+<section class="intro text">
+    <p>
+        Når fællesskabet betaler for noget, skal det også være fællesskabet der ejer det.
+    </p>
+    <p>
+        Offentlig IT er et projekt der skal munde ud i et <a href="https://www.borgerforslag.dk/" target="_blank" rel="noopener">borgerforslag</a>,
+        der stiller krav til at staten ejer de IT-projekter vi betaler for.
+    </p>
+    <p>
+        Når der udvikles IT for skattekroner, er det ikke fællesskabet, der ejer systemet.
+        Det gør det svært at tjekke kvaliteten af systemet, og at skifte leverandør hvis noget
+        ikke er i orden.
+        Det giver dyr, lav-kvalitets software med dårlig sikkerhed, der sjældent leveres til tiden.
+    </p>
+</section>
+<section id="preSignup">
+    <form id="emailForm" onsubmit="return signupListener()">
+    <label for="email">
+        <p>Hvis du er interesseret i projektet, og gerne vil være en del af det – eller hvis du bare gerne vil høre mere, når der sker noget – så skriv din email på vores mailingliste.</p>
+        <input id="email" name="email" value="" placeholder="din.email@eksempel.dk" style="padding: 10px 5px;float: left;width: 60%;box-sizing: border-box;font-family: inherit;border: 1px solid #999;border-radius:0; margin-left: 5%;" type="email">
+    </label>
+    <button name="submit" style="float: left;width: 30%;box-sizing: border-box;padding: 10px 5px;font-family: inherit; border: 1px solid #2980b9;background: #2980b9;color: white;margin-right: 5%;" type="submit">Tilmeld</button>
+    </form>
+</section>
+<section id="postSignup" style="display: none">
+    Tak fordi du skrev dig op.
+    Du vil modtage en email for at bekræfte din tilmelding.
+    Derefter skriver vi til dig, når der er nyt om projektet.
+</section>
+<section class="error" id="errorInvalidEmail" style="display: none">
+    Der er en fejl i din email. Ret den og prøv igen.
+</section>
+<section class="error" id="errorServerError" style="display: none">
+    Der gik noget galt med tilmeldingen. Prøv igen.
+</section>
+<section class="text">
+    Vi opbevarer din emailadresse med henblik på at kunne kontakte dig om lige præcis projektet Offentlig IT i fremtiden.
+    Den vil under ingen omstændigheder bruges til andre formål.
+</section>
